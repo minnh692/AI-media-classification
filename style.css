@@ -1,0 +1,356 @@
+/* AI 생성물 판별 분석기 - 스타일시트 */
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --light: #f3f4f6;
+    --gray: #6b7280;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+/* 헤더 */
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.2em;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1em;
+    opacity: 0.9;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    padding: 40px 30px;
+}
+
+/* 섹션 */
+section {
+    margin-bottom: 40px;
+}
+
+section h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: var(--text);
+}
+
+/* 업로드 영역 */
+.upload-area {
+    border: 2px dashed var(--primary);
+    border-radius: 12px;
+    padding: 50px 20px;
+    text-align: center;
+    background: var(--light);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upload-area:hover {
+    border-color: var(--primary-dark);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.upload-area.dragover {
+    border-color: var(--primary-dark);
+    background: rgba(99, 102, 241, 0.1);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.upload-area p {
+    color: var(--gray);
+    margin-bottom: 20px;
+}
+
+/* 버튼 */
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-secondary {
+    background: var(--light);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--border);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* 프리뷰 */
+.preview-container {
+    background: var(--light);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+/* 카드 */
+.card {
+    background: var(--light);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.card.verdict {
+    border-left-color: var(--warning);
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.card.summary-card {
+    border-left-color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+/* 신뢰도 바 */
+.confidence-bar {
+    background: var(--border);
+    height: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success) 0%, var(--warning) 50%, var(--danger) 100%);
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+.confidence-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#confidenceValue {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#confidenceLabel {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.confidence-label-low {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+}
+
+.confidence-label-medium {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+
+.confidence-label-high {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+/* 신호 목록 */
+#signalsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.signal-item {
+    background: white;
+    padding: 15px;
+    border-left: 4px solid var(--warning);
+    border-radius: 6px;
+}
+
+.signal-item strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
+.signal-item p {
+    color: var(--gray);
+    font-size: 0.95em;
+}
+
+/* 상세 분석 */
+.analysis-details {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.detail-item {
+    margin-bottom: 15px;
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.detail-item strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
+.detail-item p {
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+/* 로딩 */
+.loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.spinner {
+    border: 4px solid var(--light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 에러 */
+.error {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid var(--danger);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.error p {
+    color: var(--danger);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* 푸터 */
+.footer {
+    background: var(--light);
+    padding: 20px 30px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--gray);
+}
+
+.footer p {
+    margin-bottom: 5px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    section h2 {
+        font-size: 1.2em;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+
