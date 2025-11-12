@@ -800,6 +800,46 @@ def analyze():
 
 ---
 
+## 💻 개발 환경
+
+### VS Code 확장 프로그램
+
+#### 필수 확장 프로그램
+
+| 확장 프로그램 | ID | 용도 |
+|-------------|---|------|
+| **GitHub Copilot** | `github.copilot` | Python/HTML/JS 코드 자동완성 |
+| **GitHub Copilot Chat** | `github.copilot-chat` | AI 코드 작성 및 설명 |
+| **Pylance** | `ms-python.vscode-pylance` | Python 타입 체크, 자동완성 |
+| **Python** | `ms-python.python` | Python 실행, 디버깅 |
+| **Live Server** | `ritwickdey.liveserver` | index.html 로컬 웹 서버 실행 |
+
+#### 보조 확장 프로그램
+
+| 확장 프로그램 | ID | 용도 |
+|-------------|---|------|
+| **Material Icon Theme** | `pkief.material-icon-theme` | 파일/폴더 아이콘 |
+| **Open in Browser** | `techer.open-in-browser` | HTML을 브라우저에서 열기 |
+| **Code Runner** | `formulahendry.code-runner` | Python 빠른 실행 |
+
+### 파일별 주요 확장 프로그램
+
+**index.html, style.css, script.js**
+- GitHub Copilot: HTML/CSS/JS 작성 및 수정
+- Live Server: 웹페이지 실시간 미리보기
+- Material Icon Theme: 파일 구분
+
+**app.py**
+- Python: 코드 실행 및 디버깅
+- Pylance: 문법 검사, 자동완성
+- GitHub Copilot: Python 코드 작성
+- Code Runner: 빠른 실행
+
+**README.md**
+- GitHub Copilot Chat: 문서 작성 보조
+
+---
+
 ## ⚖️ 라이선스
 
 이 프로젝트는 교육 및 개인 사용 목적으로 제공됩니다.
