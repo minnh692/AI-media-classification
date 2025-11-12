@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>백엔드 연결 테스트</title>
+</head>
+<body>
+  <h1>Python 백엔드 연결 예제</h1>
+  <button id="getBtn">GET 요청 보내기</button>
+  <button id="postBtn">POST 요청 보내기</button>
+  <pre id="output"></pre>
+
+  <script>
+    const out = document.getElementById("output");
+
+    document.getElementById("getBtn").addEventListener("click", async () => {
+      const res = await fetch("http://127.0.0.1:5000/api/hello");
+      const data = await res.json();
+      out.textContent = JSON.stringify(data, null, 2);
+    });
+
+    document.getElementById("postBtn").addEventListener("click", async () => {
+      const res = await fetch("http://127.0.0.1:5000/api/echo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: "프론트엔드에서 전송한 데이터" })
+      });
+      const data = await res.json();
+      out.textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
