@@ -187,19 +187,29 @@ function displayResults(data) {
     const confidence = Math.round(data.confidence || 0);
     const verdict = data.verdict || 'UNCERTAIN';
     
+    // verdict와 confidence를 함께 해석
+    // LIKELY_HUMAN이면 confidence를 역으로 처리
+    let displayConfidence = confidence;
+    if (verdict === 'LIKELY_HUMAN') {
+        displayConfidence = Math.max(0, 100 - confidence); // 역계산
+    } else if (verdict === 'LIKELY_AI') {
+        displayConfidence = confidence; // 그대로 사용
+    }
+    // UNCERTAIN은 confidence 그대로 사용
+    
     // AI 생성 가능성 (바가 많이 채워질수록 AI 가능성 높음)
     const confidenceFill = document.getElementById('confidenceFill');
     const confidenceValue = document.getElementById('confidenceValue');
     const confidenceLabel = document.getElementById('confidenceLabel');
     
-    confidenceFill.style.width = confidence + '%';
-    confidenceValue.textContent = confidence + '%';
+    confidenceFill.style.width = displayConfidence + '%';
+    confidenceValue.textContent = displayConfidence + '%';
     
     confidenceLabel.className = '';
-    if (confidence < 30) {
+    if (displayConfidence < 30) {
         confidenceLabel.textContent = '낮음 (인간 생성)';
         confidenceLabel.classList.add('confidence-label-low');
-    } else if (confidence < 70) {
+    } else if (displayConfidence < 70) {
         confidenceLabel.textContent = '중간 (불확실)';
         confidenceLabel.classList.add('confidence-label-medium');
     } else {
