@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #6366f1;
+            padding-bottom: 10px;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #4f46e5;
+        }
+        .log {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .info {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 API 연결 테스트</h1>
+    
+    <div class="test-box">
+        <h2>1. 서버 헬스 체크</h2>
+        <button onclick="testHealth()">서버 상태 확인</button>
+        <div class="log" id="healthLog"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>2. 이미지 분석 테스트</h2>
+        <input type="file" id="testImageInput" accept="image/*">
+        <button onclick="testAnalyze()">분석 시작</button>
+        <div class="log" id="analyzeLog"></div>
+    </div>
+
+    <script>
+        function log(id, message, type = 'info') {
+            const logBox = document.getElementById(id);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type;
+            const emoji = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            logBox.innerHTML += `<p class="${className}">[${timestamp}] ${emoji} ${message}</p>`;
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        async function testHealth() {
+            const logId = 'healthLog';
+            document.getElementById(logId).innerHTML = '';
+            log(logId, '서버 상태 확인 중...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    log(logId, `서버 응답: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    log(logId, `서버 에러: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(logId, `네트워크 에러: ${error.message}`, 'error');
+                log(logId, '해결방법: python app.py 를 터미널에서 실행하세요', 'info');
+            }
+        }
+
+        async function testAnalyze() {
+            const logId = 'analyzeLog';
+            document.getElementById(logId).innerHTML = '';
+            
+            const fileInput = document.getElementById('testImageInput');
+            if (!fileInput.files[0]) {
+                log(logId, '이미지를 선택해주세요', 'error');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            log(logId, `파일 선택됨: ${file.name} (${file.type})`, 'info');
+            log(logId, `파일 크기: ${(file.size / 1024).toFixed(2)} KB`, 'info');
+
+            // Base64 변환
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Data = e.target.result.split(',')[1];
+                log(logId, `Base64 변환 완료 (${base64Data.length} bytes)`, 'info');
+                
+                // API 호출
+                log(logId, 'API 호출 중...', 'info');
+                try {
+                    const response = await fetch('http://localhost:5000/api/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            imageData: base64Data,
+                            mediaType: file.type
+                        })
+                    });
+
+                    log(logId, `API 응답 상태: ${response.status}`, 'info');
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        log(logId, `분석 완료! 신뢰도: ${data.confidence}%`, 'success');
+                        log(logId, `결과: ${JSON.stringify(data, null, 2)}`, 'success');
+                    } else {
+                        const error = await response.json();
+                        log(logId, `API 에러: ${error.error}`, 'error');
+                    }
+                } catch (error) {
+                    log(logId, `네트워크 에러: ${error.message}`, 'error');
+                    log(logId, '해결방법: 1) python app.py 실행, 2) F5 새로고침, 3) 다시 시도', 'info');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>

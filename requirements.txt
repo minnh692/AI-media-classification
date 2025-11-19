@@ -1,0 +1,8 @@
+# requirements.txt
+# Python 의존성 파일
+# 사용법: pip install -r requirements.txt
+
+flask==2.3.3
+flask-cors==4.0.0
+requests==2.31.0
+python-dotenv==1.0.0
